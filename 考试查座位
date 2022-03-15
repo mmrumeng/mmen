@@ -1,0 +1,13 @@
+# mmen
+#include<stdio.h>
+int main()
+{
+	printf("请输入准考生号1234567891012xxx的后三位\n");
+	int i;
+	scanf("%d",&i);
+	int a,b;
+	a=i%100;//试机座位号
+	b=(a%10)*10+a/10;//考试座位号
+	printf("考生准考号 试机座位号 考试座位号\n1234567891012%d %d %d\n",i,a,b);
+	return 0;
+}
