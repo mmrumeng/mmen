@@ -1,13 +1,35 @@
-# mmen
 #include<stdio.h>
+
+struct student{
+	char num[100];
+	int ji,test;
+};
 int main()
 {
-	printf("请输入准考生号1234567891012xxx的后三位\n");
+	struct student stu[1005];
+	int n;
+	scanf("%d",&n);
 	int i;
-	scanf("%d",&i);
-	int a,b;
-	a=i%100;//试机座位号
-	b=(a%10)*10+a/10;//考试座位号
-	printf("考生准考号 试机座位号 考试座位号\n1234567891012%d %d %d\n",i,a,b);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %d %d",&stu[i].num,&stu[i].ji,&stu[i].test);
+	}
+	int j,b[1000];
+	scanf("%d",&j);
+	int h;
+	for(i=0;i<j;i++)
+	{
+		scanf("%d",&b[i]);
+	}
+	for(h=0;h<j;h++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(stu[i].ji==b[h])
+			{
+				printf("%s %d\n",stu[i].num,stu[i].test);
+			}
+		}
+	}
 	return 0;
 }
