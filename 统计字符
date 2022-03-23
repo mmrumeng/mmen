@@ -1,21 +1,32 @@
 #mmen
 #include<stdio.h>
+#include<string.h>
 int main()
 {
-	printf("程序开始\n输入It is not easy when you want to make something change,but if it is easy that eyeryone can make it.\n统计有多少个it\n");
-	char a[100]="It is not easy when you want to make something change,but if it is easy that eyeryone can make it.";
-	int b,sum=0;
+	printf("程序开始\n输入句子");
+	char a[100];
+	gets(a);
+	strlwr(a);
+	printf("\n输入要查询的字符\n");
+	char c[10];
+	gets(c);
+	strlwr(c);
+	int b,sum=0,d,count,e;
+	e=strlen(c);
 	for(b=0;b<100;b++)
 	{
-		if(a[b]=='i'||a[b]=='I')
+		count=0;
+		for(d=0;d<10,a[b]==c[d];b++,d++)
 		{
-			if(a[b+1]=='t')
-			{
-				sum++;
-			}
+			count++;
+		}
+		b=b-count;
+		if(count==e)
+		{
+			sum++;
 		}
 	}
-	printf("出现了%d次it\n",sum);
+	printf("出现了%d次%s\n",sum,c);
 	printf("程序即将结束\n");
 	return 0;
 }
