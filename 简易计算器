@@ -1,0 +1,107 @@
+# mmen
+#include<iostream>
+#include<stack>
+#include<string>
+using namespace std;
+stack<char> c;
+stack<double> n;
+string ans = "";
+double a, b, res;//全局变量
+double calculate(double a, double b, char op)
+{
+	switch (op)
+	{
+		case '+':return a + b;
+		case '-':return a - b;
+		case '*':return a * b;
+		case '/':return a / b;
+	}
+}
+double mystof(string s)
+{
+	double getint = 0;
+	double getfloat = 0;
+	int i = 0;
+	while (i<s.length() && s[i] != '.')
+	{
+		getint = getint * 10 + s[i] - '0';
+		i++;
+	}
+	i++;//跳过小数点
+	int temp = s.length() - i;//保存几位小数
+	while (i < s.length())
+	{
+		getfloat = getfloat * 10 + s[i] - '0';
+		i++;
+	}
+	while (temp > 0)
+	{
+		getfloat /= 10;
+		temp--;
+	}
+	return getint+getfloat;
+}
+void calculate1()//处理遇到 ) 和加减 时的情况
+{
+	while (c.top() != '(')
+	{
+		b = n.top();//b是减数+-*/下同
+		n.pop();
+		a = n.top();//a是被减数
+		n.pop();
+		res = calculate(a, b, c.top());
+		n.push(res);
+		c.pop();
+	}
+}
+void calculate2()//处理乘法
+{
+	while (c.top() == '*' || c.top()=='/')
+	{
+		b = n.top();
+		n.pop();
+		a = n.top();
+		n.pop();
+		res = calculate(a, b, c.top());
+		n.push(res);
+		c.pop();
+	}
+}
+int main()
+{
+	string s;
+	cin >> s;
+	s.insert(0, "(");
+	s.append(")");//首尾用括号包起来便于处理
+	for (int i = 0; i < s.length(); i++)
+	{
+		if (s[i] == '(' && (s[i + 1] == '+' || s[i + 1] == '-'))//处理如-3.14+1的情况在-前添加一个0
+		{
+			s.insert(i + 1, "0");
+		}
+	}
+	for (int a = 0; a < s.length(); a++)
+	{
+		if (s[a] >= '0' && s[a] <= '9' || s[a]=='.')//保存多位数符转换为数字如"13.14"到13.14
+		{
+			ans += s[a];
+			continue;
+		}
+		if(!ans.empty())
+		{
+			n.push(mystof(ans));
+			ans = "";
+		}
+		switch (s[a])
+		{
+			case '+':calculate1(); c.push('+'); break;
+			case '-':calculate1(); c.push('-'); break;
+			case '*':calculate2(); c.push('*'); break;
+			case '/':calculate2(); c.push('/'); break;
+			case '(':c.push('('); break;
+			case ')':calculate1(); c.pop(); break;
+		}
+	}
+	cout << n.top();//栈顶就是最终结果
+	return 0;
+}
