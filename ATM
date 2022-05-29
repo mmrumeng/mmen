@@ -1,0 +1,90 @@
+# mmen
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Account
+{
+	char name[100];
+	char username[100];
+	char password[100];
+
+	struct Account * next;
+};
+typedef struct Account Account;
+
+Account * head=NULL;//指向头结点的指针
+Account * tail=-NULL;//指向尾结点的指针
+
+
+void loadData()
+{
+	FILE* fp=fopen("D:/atm.txt","r");
+	if(fp!=NULL)
+	{
+		while(!feof(fp))
+		{
+			//创建结点：申请一块堆内存空间，将其地址赋值给指针newNode
+			Account * newNode=(Account *)malloc(sizeof(Account));
+
+			//结点赋值
+			fscanf(fp,"%s %s %s\n",newNode->name,newNode->username,newNode->password);
+			newNode->next=NULL;
+
+			//将结点添加链表中
+			if(head==NULL)
+			{
+				head=newNode;
+				tail=newNode;
+			}
+			else
+			{
+				tail->next=newNode;
+				tail=newNode;
+			}
+
+		}
+		printf("加载成功!\n");
+		fclose(fp);
+	}
+}
+
+void printAccount(Account a)
+{
+	printf("%s\t%s\t%s\n",a.name,a.username,a.password);
+}
+
+void printLinkedList()
+{
+	Account * curP=head;
+	while(curP!=NULL)
+	{
+		printAccount(*curP);
+		curP=curP->next;
+	}
+}
+
+void saveData()
+{
+	FILE* fp=fopen("D:/atm.txt","w");
+	if(fp!=NULL)
+	{
+		Account * curP=head;
+		while(curP!=NULL)
+		{
+			fprintf(fp,"%s\t%s\t%s\n",curP->name,curP->username,curP->password);
+			curP=curP->next;
+		}
+		fclose(fp);
+	}
+	printf("保存成功\n");
+}
+
+int main()
+{
+	loadData();
+
+	printLinkedList();
+
+	saveData();
+	return 0;
+}
